@@ -1,0 +1,68 @@
+AI Weirdness
+2021-09-26
+The pressing ethical questions in machine learning are not about machines becoming self-aware and taking over the world, but about how people can exploit other people, or through carelessness introduce immoral behavior into automated systems.
+
+~
+
+The developments in the realm of Artificial Intelligences has caused some pretty bizarre results.
+
+Sometimes they can help us grieve:
+
+It was Sept. 24, the night of his initial conversation with Project December's simulation of Jessica, and after just a few minutes of chatting, Joshua began to relax. He stopped mentioning the fancy software that was making the conversation possible. He stopped telling the bot that this was all a trick. Of course the bot wasn’t actually Jessica, but that didn’t seem to matter so much anymore: The bot was clearly able to discuss emotions. He could say the things he wished he had said when Jessica was alive. He could talk about his grief. ~
+
+Deadbots
+A deadbot is a chatbot whose training data — that which shapes how and what it communicates — is data based on a deceased person. ~
+Even when they die, people are not mere things with which others can do as they please. This is why our societies consider it wrong to desecrate or to be disrespectful to the memory of the dead. In other words, we have certain moral obligations towards the dead, insofar as death does not necessarily imply that people cease to exist in a morally relevant way.
+
+Likewise, the debate is open as to whether we should protect the dead’s fundamental rights (e.g., privacy and personal data). Developing a deadbot replicating someone’s personality requires great amounts of personal information such as social network data (see what Microsoft or Eternime propose) which have proven to reveal highly sensitive traits. ~
+
+Whatever it was, to Quinn, and others who have used the app not to connect to history, but to those they’ve personally lost, Deep Nostalgia presents a predicament that is as old as death itself: the desire to connect with the dead is natural, yet actually doing so can often feel anything but. ~
+
+But others are afraid of what they bring (hyperlinks added my me):
+
+The immediate licensing of GPT-3 by Microsoft was an augury of this. Indeed, the rights to interact with these AIs will be some of the most valuable licenses on the planet in the next decade. Consumers, even academic AI researchers, will communicate with company-owned trillion-parameter AIs solely via oracles, getting nowhere near the source code. The future of this technology belongs to huge corporations with major resources. So it’s not really that “AI is automating art”—no, corporations are automating art. And writing. And translation. And illustration. And music. And the thousand other human forms of creativity that give life meaning. They are now the province of Big Tech. ~
+
+AI's and neural networks are also neither impartial nor unbiased. They contain within them the biases of the datasets we feed them:
+
+Behind the drive for multimodal datasets is the belief that such datasets are the path to AGI. We ask, how many images of rape are acceptable to feed into a supposedly AGI in order for it to “understand” the world?...
+
+... What can be done about datasets like LAION in the meantime? Such datasets present a threat to Black women, ethnic minorities, children & other marginalized ppl. They're likely to be utilised by entities that are not aware of &/or don't care about issues the datasets propagate. ~
+
+There is recent studies suggesting that the universe may have a lot in common with machine learning systems in how it "learns" the laws of physics:
+
+What do we mean by the laws of nature learning? The answer is simply that we canconstruct a correspondence between possible laws of nature... and some of the states of a machine learning model such as the restricted Boltzmann machine. In the simplest language, the choice of a vacuum of a QFT is mapped to a process of pattern recognition. ~ (pdf link)
+
+There are also plans to have AI determine whether or not a person is of sound-enough mind to decide for themselves if they want to end their own lives:
+
+Our aim is to develop an artificial intelligence screening system to establish the person’s mental capacity. Naturally there is a lot of scepticism, especially on the part of psychiatrists. But our original conceptual idea is that the person would do an online test and receive a code to access the Sarco. ~
+
+Maybe it'll give us the chance to peer into the innermost thoughts of a sentient creature for the first time?:
+
+What is latent space?
+
+Latent space can be thought of as the imagination of a generative neural network such as StyleGAN3 that can synthesise photo realistic potraits of non existing people.
+
+It is the space into which a neural network inscribes its understanding of images it is trained on. Once the network is trained on real imagery it draws inspiration from this space to create new artificial images.
+
+Initially this space has no meaning, it is the particular training data and the setup of the network that interpret the latent space and thus give it meaning. In the context of neural networks each latent space is unique. ~
+
+Powerful ‘Machine Scientists’ Distill the Laws of Physics From Raw Data
+
+... The goal of symbolic regression is to speed up such Keplerian trial and error, scanning the countless ways of linking variables with basic mathematical operations to find the equation that most accurately predicts a system’s behavior...
+
+... Machine scientists are also helping physicists understand systems that span many scales. Physicists typically use one set of equations for atoms and a completely different set for billiard balls, but this piecemeal approach doesn’t work for researchers in a discipline like climate science, where small-scale currents around Manhattan feed into the Atlantic Ocean’s gulf stream...
+
+~
+
+How to make the universe think for us
+
+From a physicist’s perspective, a large digital neural network is simply trying to do too much math. Today’s biggest behemoths must record and manipulate more than half a trillion numbers. The universe, meanwhile, constantly pulls off tasks far beyond the limits of computers’ meager bookkeeping abilities. A room might have trillions of trillions of air molecules bouncing around; that’s an impossible number of moving pieces for a computer to track in a full-fledged simulation of collisions, but the air itself has no trouble deciding how to behave from moment to moment.
+
+~
+
+The Necromancer's Cookbook is the latest culinary-occult tome from Gravestone Publishing. Featuring recipes and methods from the world's leading dabblers of the dark arts, this compendium will become your go-to source of inspiration and technique when dealing with the undead in the kitchen. With tips and tricks ranging from how to extract the purest of soul essences to the best way to re-establish succulence post-exanguination, this delightfully illustrated grimoire will steer you right every time.
+
+This is a 73 page artbook of AI-generated art in the theme of an occult grimoire of necromantic recipes. Some of the images are gory and horror-adjacent, so view with caution.
+
+~
+
