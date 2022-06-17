@@ -1,6 +1,7 @@
 
 
 (use-modules (ice-9 textual-ports)
+	     ; (ice-9 pretty-print)
 	     (srfi srfi-1)
 	     (syntax threading))
 
@@ -138,4 +139,17 @@ matrix."
 	  (loop (cons (normalize-row (vector-ref matrix index)) result)
 		(++ index))))))
 
-;; (define )
+(define file->matrix-image
+  (lambda (file)
+    (let* ((tokens (~> (tokenize file)
+		       (vector->list <>)
+		       (sanitize-input <>)
+		       (list->vector <>)))
+	   (uniq-tokens (unique tokens)))
+      `(,uniq-tokens
+	. ,(~> (occurences-matrix tokens uniq-tokens)
+	       (normalize-matrix <>))))))
+
+(define matrix-image-ref
+  (lambda (matrix obj)
+    ()))
