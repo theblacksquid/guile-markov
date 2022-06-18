@@ -3,6 +3,7 @@
 (use-modules (ice-9 textual-ports)
 	     ; (ice-9 pretty-print)
 	     (srfi srfi-1)
+	     (srfi srfi-43)
 	     (syntax threading))
 
 (define ++
@@ -83,15 +84,9 @@ For example:
 Say the word \"sauce\" shows up in index 19 in VEC-UNIQUE, we then
 checking if it begins showing up beside (i + 1) words in VEC, and
 increment it every time it does."
-    (let loop ((result '())
-	       (index 0))
-      (if (= index (- (vector-length vec-unique) 1))
-	  (list->vector (reverse result))
-	  (loop (cons (word-occurences (vector-ref vec-unique index)
-				       vec
-				       vec-unique)
-		      result)
-		(++ index))))))
+    (vector-map (lambda (i v)
+		  (word-occurences v vec vec-unique))
+		vec-unique)))
 
 (define get-row-sum
   (lambda (vec)
@@ -139,7 +134,7 @@ matrix."
 	  (loop (cons (normalize-row (vector-ref matrix index)) result)
 		(++ index))))))
 
-(define file->matrix-image
+(define file->raw-image
   (lambda (file)
     (let* ((tokens (~> (tokenize file)
 		       (vector->list <>)
@@ -150,6 +145,40 @@ matrix."
 	. ,(~> (occurences-matrix tokens uniq-tokens)
 	       (normalize-matrix <>))))))
 
+(define scan-for-non-zero
+  (lambda (vec)
+    "Given VEC, return a list where each item is in the form
+`(CONTENT . INDEX)` where INDEX is the index in the vector where
+CONTENT is found."
+    (let loop ((result '())
+	       (index 0))
+      (cond ((= index (- (vector-length vec) 1))
+	     (reverse result))
+	    ((not (zero? (vector-ref vec index)))
+	     (loop (cons `(,(vector-ref vec index) . ,index)
+			 result)
+		   (++ index)))
+	    (else (loop result (++ index)))))))
+
+(define compress-matrix-image
+  (lambda (matrix-image)
+    "given a raw MATRIX-IMAGE, such as the ones output by
+`file->raw-image`, compress the weights in such a way that the large,
+mostly-zero-value matrix is replaced by a vector of lists containing
+weights and "
+    (let loop ((result '())
+	       (index 0))
+      (if (= index (- (vector-length (car matrix-image)) 1))
+	  `(,(car matrix-image) . ,(reverse result))
+	  (loop (cons (scan-for-non-zero
+		       (vector-ref (cdr matrix-image) index))
+		      result)
+		(++ index))))))
+
 (define matrix-image-ref
-  (lambda (matrix obj)
-    ()))
+  (lambda* (matrix obj #:optional (pred equal?))
+    (let ((index (vector-member (car matrix) obj pred)))
+      (if index
+	  `(,(vector-ref (car matrix) index) .
+	    ,(vector-ref (cdr matrix) index))))))
+
