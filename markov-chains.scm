@@ -181,3 +181,37 @@ MATRIX, return #f"
 	    ,(vector-ref (cdr matrix) index))
 	  #f))))
 
+(define image-ref->rolling-table
+  (lambda (matrix image-ref)
+    (let ((vec-unique (car matrix)))
+      (list->vector
+       (fold (lambda (el prev)
+	       (append
+		(make-list (inexact->exact (* (car el) 100))
+			   (vector-ref vec-unique (cdr el)))
+		prev))
+	     '()
+	     (cdr image-ref))))))
+
+(define prompt->generated-text
+  (lambda* (matrix num-words #:optional seed)
+    (let loop ((result '())
+	       (current-word
+		(if seed
+		    (if (vector-member (car matrix) seed string-ci=?)
+			seed
+			(vector-ref (car matrix)
+				    (random (vector-length (car matrix)))))
+		    (vector-ref (car matrix)
+				(random (vector-length (car matrix))))))
+	       (words-left num-words))
+      (if (zero? words-left)
+	  (string-join (reverse result) " ")
+	  (let* ((vec-unique (car matrix))
+		 (rolling-table (~> (matrix-image-ref matrix current-word string-ci=?)
+				    (image-ref->rolling-table matrix <>)))
+		 (new-word (vector-ref rolling-table
+				       (random (vector-length rolling-table)))))
+	    (loop (cons new-word result)
+		  new-word
+		  (- words-left 1)))))))
