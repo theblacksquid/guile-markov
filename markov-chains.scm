@@ -178,5 +178,6 @@ MATRIX, return #f"
     (let ((index (vector-member (car matrix) obj pred)))
       (if index
 	  `(,(vector-ref (car matrix) index) .
-	    ,(vector-ref (cdr matrix) index))))))
+	    ,(vector-ref (cdr matrix) index))
+	  #f))))
 

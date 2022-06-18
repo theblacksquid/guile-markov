@@ -1,0 +1,20 @@
+#+AUTHOR: theblacksquid
+#+title: guile-markov
+
+* What is it?
+
+It is an implementation of a markov chain, using [[https://www.gnu.org/software/guile/][GNU Guile]]
+
+* Why?
+
+This is in order to learn about the basics of AI and data science.
+
+* Current Status
+
+PRE-ALPHA!
+
+DO NOT USE YET!
+
+* License
+
+All code is under GPL3.
