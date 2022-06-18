@@ -157,7 +157,7 @@ CONTENT is found."
     "given a raw MATRIX-IMAGE, such as the ones output by
 `file->raw-image`, compress the weights in such a way that the large,
 mostly-zero-value matrix is replaced by a vector of lists containing
-weights and "
+weights and indexes. See `scan-for-non-zero` for more details."
     `(,(car matrix-image) .
       ,(vector-map (lambda (index value)
 		     (scan-for-non-zero value))
@@ -165,6 +165,16 @@ weights and "
 
 (define matrix-image-ref
   (lambda* (matrix obj #:optional (pred equal?))
+    "given MATRIX, either from `file-raw-image` or
+`compress-matrix-image`, if OBJ exists in MATRIX, return a pair in the
+form of
+
+(OBJ . LS)
+
+where LS is a list of indexes and weights as per `scan-for-non-zero`.
+
+PRED is used to determine membership of OBJ in MATRIX. if OBJ is not in
+MATRIX, return #f"
     (let ((index (vector-member (car matrix) obj pred)))
       (if index
 	  `(,(vector-ref (car matrix) index) .
