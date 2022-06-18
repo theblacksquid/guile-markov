@@ -94,10 +94,9 @@ increment it every time it does."
 all numbers."
     (let loop ((result 0)
 	       (index 0))
-      (if (= index (- (vector-length vec) 1))
-	  result
-	  (loop (+ (vector-ref vec index) result)
-		(++ index))))))
+      (vector-fold (lambda (index state value)
+		     (+ value state)) 0
+		   vec))))
 
 (define first-two-decimal-places
   (lambda (num)
@@ -110,18 +109,12 @@ all numbers."
   (lambda (vec)
     "Sum all the numbers in VEC, and then return a new vector containing
 VEC's contents divided by the sum."
-    (let loop ((sum (get-row-sum vec))
-	       (index 0)
-	       (result '()))
-      (if (= index (- (vector-length vec) 1))
-	  (list->vector (reverse result))
-	  (loop sum
-		(++ index)
-		(cons (~> (vector-ref vec index)
-			  (/ <> sum)
-			  (exact->inexact <>)
-			  (first-two-decimal-places <>))
-		      result))))))
+    (let ((row-sum (get-row-sum vec)))
+      (vector-map (lambda (index value)
+		    (~> (/ value row-sum)
+			(exact->inexact <>)
+			(first-two-decimal-places <>)))
+		  vec))))
 
 (define normalize-matrix
   (lambda (matrix)
@@ -129,10 +122,9 @@ VEC's contents divided by the sum."
 matrix."
     (let loop ((result '())
 	       (index 0))
-      (if (= index (- (vector-length matrix) 1))
-	  (list->vector (reverse result))
-	  (loop (cons (normalize-row (vector-ref matrix index)) result)
-		(++ index))))))
+      (vector-map (lambda (index value)
+		    (normalize-row value))
+		  matrix))))
 
 (define file->raw-image
   (lambda (file)
@@ -166,14 +158,10 @@ CONTENT is found."
 `file->raw-image`, compress the weights in such a way that the large,
 mostly-zero-value matrix is replaced by a vector of lists containing
 weights and "
-    (let loop ((result '())
-	       (index 0))
-      (if (= index (- (vector-length (car matrix-image)) 1))
-	  `(,(car matrix-image) . ,(reverse result))
-	  (loop (cons (scan-for-non-zero
-		       (vector-ref (cdr matrix-image) index))
-		      result)
-		(++ index))))))
+    `(,(car matrix-image) .
+      ,(vector-map (lambda (index value)
+		     (scan-for-non-zero value))
+		   (cdr matrix-image)))))
 
 (define matrix-image-ref
   (lambda* (matrix obj #:optional (pred equal?))
