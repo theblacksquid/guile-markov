@@ -187,7 +187,8 @@ MATRIX, return #f"
       (list->vector
        (fold (lambda (el prev)
 	       (append
-		(make-list (inexact->exact (* (car el) 100))
+		(make-list (inexact->exact
+			    (first-two-decimal-places (* (car el) 100)))
 			   (vector-ref vec-unique (cdr el)))
 		prev))
 	     '()
@@ -206,7 +207,7 @@ MATRIX, return #f"
 				(random (vector-length (car matrix))))))
 	       (words-left num-words))
       (if (zero? words-left)
-	  (string-join (reverse result) " ")
+	  (string-join result " ")
 	  (let* ((vec-unique (car matrix))
 		 (rolling-table (~> (matrix-image-ref matrix current-word string-ci=?)
 				    (image-ref->rolling-table matrix <>)))
