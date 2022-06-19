@@ -72,7 +72,14 @@ in a given vector VEC-UNIQUE"
 		    (inc-val (++ (vector-ref result word-index))))
 	       (begin (vector-set! result word-index inc-val)
 		      (loop result (++ index)))))
-	    (else (loop result (++ index)))))))
+	    (else (loop result (++ index)))))
+    
+    ;; (let ((result (make-vector (vector-length vec-unique) 0)))
+    ;;   (vector-for-each (lambda (index value)
+    ;; 			 (if (string-ci=? str value)
+    ;; 			     (vector-set! result (vector-member vec-unique ))))
+    ;; 		       vec))
+    ))
 
 (define occurences-matrix
   (lambda (vec vec-unique)
@@ -92,11 +99,9 @@ increment it every time it does."
   (lambda (vec)
     "given a vector VEC whose contents are all numbers, return the sum of
 all numbers."
-    (let loop ((result 0)
-	       (index 0))
-      (vector-fold (lambda (index state value)
-		     (+ value state)) 0
-		   vec))))
+    (vector-fold (lambda (index state value)
+		   (+ value state)) 0
+		   vec)))
 
 (define first-two-decimal-places
   (lambda (num)
@@ -105,26 +110,38 @@ all numbers."
 	  (string->number (string-take str 4))
 	  (string->number (string-take str 3))))))
 
+(define floating-point->integer
+  (lambda (num)
+    (~> (number->string num)
+	(string-split <> #\.)
+	(car <>)
+	(string->number <>))))
+
 (define normalize-row
   (lambda (vec)
     "Sum all the numbers in VEC, and then return a new vector containing
 VEC's contents divided by the sum."
     (let ((row-sum (get-row-sum vec)))
       (vector-map (lambda (index value)
-		    (~> (/ value row-sum)
-			(exact->inexact <>)
-			(first-two-decimal-places <>)))
+		    (if (and (> 0.01 (exact->inexact (/ value row-sum)))
+			     (not (zero? value)))
+			;; basically just round anything below 0.01
+			;; down to zero. It's not a satisfying
+			;; solution in a mathematical sense, but it's
+			;; good enough for what i'm trying to do here.
+			0
+			(~> (/ value row-sum)
+			    exact->inexact
+			    first-two-decimal-places)))
 		  vec))))
 
 (define normalize-matrix
   (lambda (matrix)
     "Apply `normalize-row` to all members of MATRIX and return a new
 matrix."
-    (let loop ((result '())
-	       (index 0))
-      (vector-map (lambda (index value)
+    (vector-map (lambda (index value)
 		    (normalize-row value))
-		  matrix))))
+		  matrix)))
 
 (define file->raw-image
   (lambda (file)
@@ -142,15 +159,12 @@ matrix."
     "Given VEC, return a list where each item is in the form
 `(CONTENT . INDEX)` where INDEX is the index in the vector where
 CONTENT is found."
-    (let loop ((result '())
-	       (index 0))
-      (cond ((= index (- (vector-length vec) 1))
-	     (reverse result))
-	    ((not (zero? (vector-ref vec index)))
-	     (loop (cons `(,(vector-ref vec index) . ,index)
-			 result)
-		   (++ index)))
-	    (else (loop result (++ index)))))))
+    (reverse (vector-fold (lambda (index state value)
+			    (if (not (zero? value))
+				(cons `(,value . ,index) state)
+				state))
+			  '()
+			  vec))))
 
 (define compress-matrix-image
   (lambda (matrix-image)
@@ -187,7 +201,7 @@ MATRIX, return #f"
       (list->vector
        (fold (lambda (el prev)
 	       (append
-		(make-list (inexact->exact
+		(make-list (floating-point->integer
 			    (first-two-decimal-places (* (car el) 100)))
 			   (vector-ref vec-unique (cdr el)))
 		prev))
